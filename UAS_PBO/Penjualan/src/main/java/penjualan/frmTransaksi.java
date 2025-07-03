@@ -826,38 +826,52 @@ public class frmTransaksi extends javax.swing.JFrame {
     private void cmdCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCetakActionPerformed
         // TODO add your handling code here:
         format_tanggal();
-      String ctk="Nota Penjualan\nNo:"+txtNoJual.getText()+"\nTanggal : "+tanggal;
-      ctk=ctk+"\n"+"--------------------------------------------------------------------------------------------------------------------------------";
-      ctk=ctk+"\n"+"Kode\tNama Barang\t\tHarga\tJml\tTotal";
-      ctk=ctk+"\n"+"--------------------------------------------------------------------------------------------------------------------------------";
+    
+    // Informasi header nota
+    String ctk = "Nota Penjualan\nNo: " + txtNoJual.getText() + "\nTanggal : " + tanggal;
+    ctk += "\n" + "-------------------------------------------------------------------------------------------------";
+    
+    // Tambahkan "Diskon" pada header kolom
+    ctk += "\n" + "Kode\tNama Barang\tHarga\tJml\tDiskon\tTotal";
+    ctk += "\n" + "-------------------------------------------------------------------------------------------------";
 
-      for(int i=0;i<tblJual.getRowCount();i++)
-      {
-          String xkd=(String)tblJual.getValueAt(i,0);
-          String xnama=(String)tblJual.getValueAt(i,1);
-          double xhrg=(Double)tblJual.getValueAt(i,2);
-          int xjml=(Integer)tblJual.getValueAt(i,3);
-          double xtot=(Double)tblJual.getValueAt(i,4);
-          ctk=ctk+"\n"+xkd+"\t"+xnama+"\t\t"+xhrg+"\t"+xjml+"\t"+xtot;
-      }
+    // Loop melalui setiap baris di tabel untuk mendapatkan datanya
+    for (int i = 0; i < tblJual.getRowCount(); i++) {
+        String xkd = (String) tblJual.getValueAt(i, 0);
+        String xnama = (String) tblJual.getValueAt(i, 1);
+        double xhrg = (Double) tblJual.getValueAt(i, 2);
+        int xjml = (Integer) tblJual.getValueAt(i, 3);
+        double xdiskon = (Double) tblJual.getValueAt(i, 4); // Ambil nilai diskon dari kolom ke-4
+        double xtot = (Double) tblJual.getValueAt(i, 5);    // Ambil nilai total dari kolom ke-5
+        
+        // Gabungkan semua data, termasuk diskon, ke dalam string nota
+        ctk += "\n" + xkd + "\t" + xnama + "\t" + xhrg + "\t" + xjml + "\t" + xdiskon + "\t" + xtot;
+    }
 
-      ctk=ctk+"\n"+"--------------------------------------------------------------------------------------------------------------------------------";
-      ctk=ctk+"\n\t\t\t\t\t"+txtTotal.getText();
-      text.setText(ctk);
+    ctk += "\n" + "-------------------------------------------------------------------------------------------------";
+    
+    // Tambahkan informasi Total, Bayar, dan Kembali
+    ctk += "\n\t\t\t\tTotal: \t" + txtTotal.getText();
+    ctk += "\n\t\t\t\tBayar: \t" + txtBayar.getText();
+    ctk += "\n\t\t\t\tKembali: \t" + txtKembali.getText();
+    
+    // Tampilkan hasil di text area
+    text.setText(ctk);
 
-      String headerField="";
-      String footerField="";
-      MessageFormat header = new MessageFormat(headerField);
-      MessageFormat footer = new MessageFormat(footerField);
-      boolean interactive = true;//interactiveCheck.isSelected();
-      boolean background = true;//backgroundCheck.isSelected();
-      PrintingTask task = new PrintingTask(header, footer, interactive);
+    // Proses untuk mencetak ke printer (kode ini tidak perlu diubah)
+    String headerField = "";
+    String footerField = "";
+    MessageFormat header = new MessageFormat(headerField);
+    MessageFormat footer = new MessageFormat(footerField);
+    boolean interactive = true;
+    boolean background = true;
+    PrintingTask task = new PrintingTask(header, footer, interactive);
 
-      if (background) {
-          task.execute();
-      } else {
-          task.run();
-      }
+    if (background) {
+        task.execute();
+    } else {
+        task.run();
+    }
     }//GEN-LAST:event_cmdCetakActionPerformed
 
     private void txtBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBayarActionPerformed
